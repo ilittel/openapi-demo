@@ -1,0 +1,37 @@
+plugins {
+    id 'application'
+    id 'org.openapi.generator' version '5.1.0'
+}
+
+dependencies {
+    runtime project(':customer.frontend')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${rootDir}/openapi/src/gen/java"
+        }
+    }
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'openapi.app.App'
+}
+
+openApiGenerate {
+    // For all generators and options, see https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators.md
+    generatorName = 'jaxrs-jersey'
+    // NOTE: Double quotes below are important!
+    inputSpec = "${rootDir}/customer.api/ilittel-CustomerAPI-2.0.0-oas3-resolved.yaml"
+    outputDir = "${rootDir}/customer.backend/openapi"
+    apiPackage = 'org.openapi.customer.api'
+    invokerPackage = 'org.openapi.customer.invoker'
+    modelPackage = 'org.openapi.customer.model'
+    configOptions = [
+            dateLibrary: 'java8'
+    ]
+}
+
+compileJava.dependsOn(openApiGenerate)
