@@ -26,12 +26,20 @@ openApiGenerate {
     // NOTE: Double quotes below are important!
     inputSpec = "${rootDir}/customer.api/ilittel-CustomerAPI-2.0.0-oas3-resolved.yaml"
     outputDir = "${rootDir}/customer.backend/openapi"
-    apiPackage = 'org.openapi.customer.api'
-    invokerPackage = 'org.openapi.customer.invoker'
-    modelPackage = 'org.openapi.customer.model'
+    apiPackage = 'org.openapidemo.customer.api'
+    invokerPackage = 'org.openapidemo.customer.invoker'
+    modelPackage = 'org.openapidemo.customer.model'
     configOptions = [
             dateLibrary: 'java8'
     ]
+    globalProperties = [
+            // Notes on the generation properties below:
+            // 1) An empty value means 'generate all'.
+            // 2) If you specify one, the others will NOT be generated.
+            apis: '',
+            models: '',
+            //supportingFiles: ''
+    ]
 }
 
-compileJava.dependsOn(openApiGenerate)
+tasks.compileJava.dependsOn(tasks.openApiGenerate)
