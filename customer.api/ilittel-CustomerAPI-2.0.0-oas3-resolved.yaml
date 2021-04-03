@@ -38,9 +38,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
-            applicaiton/xml:
-              schema:
-                $ref: '#/components/schemas/Customer'
         "404":
           description: employee with this id does not exist.
     post:
