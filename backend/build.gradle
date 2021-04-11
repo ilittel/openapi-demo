@@ -17,6 +17,7 @@ repositories {
 dependencies {
     //runtimeOnly project(':frontend')
     implementation 'io.dropwizard:dropwizard-core:2.0.20'
+    implementation 'io.swagger:swagger-annotations:1.5.3'
 }
 
 sourceSets {
@@ -34,28 +35,29 @@ application {
 
 openApiGenerate {
     // For all generators and options, see https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators.md
-    generatorName = 'jaxrs-jersey'
+    generatorName = 'jaxrs-spec'
     // NOTE: Double quotes below are important!
     inputSpec = "${rootDir}/api/ilittel-Products-1.0.0-unresolved.yaml"
-    outputDir = "${rootDir}/backend/openapi"
+    outputDir = "${projectDir}/openapi"
     apiPackage = 'org.openapidemo.api'
     invokerPackage = 'org.openapidemo.invoker'
     modelPackage = 'org.openapidemo.model'
     configOptions = [
-            dateLibrary: 'java8'
+        interfaceOnly: 'true',
+        dateLibrary: 'java8'
     ]
     globalProperties = [
-            // Notes on the generation properties below:
-            // 1) An empty value means 'generate all'.
-            // 2) If you specify one, the others will NOT be generated.
-            apis: '',
-            models: '',
-            //supportingFiles: ''
+        // Notes on the generation properties below:
+        // 1) An empty value means 'generate all'.
+        // 2) If you specify one, the others will NOT be generated.
+        apis: '',
+        models: '',
+        //supportingFiles: ''
     ]
 }
 
 task cleanGeneratedCode(type: Delete) {
-    delete "${rootDir}/backend/openapi"
+    delete openApiGenerate.outputDir
 }
 
 tasks.compileJava.dependsOn(tasks.openApiGenerate)
