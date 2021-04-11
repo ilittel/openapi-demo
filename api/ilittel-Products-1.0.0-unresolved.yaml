@@ -1,0 +1,188 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ilittel/Products/1.0.0
+info:
+  description: Product API
+  version: "1.0.0"
+  title: Simple product API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: admins
+    description: Secured Admin-only calls
+  - name: users
+    description: Operations available to regular users
+paths:
+  /products:
+    get:
+      tags:
+        - users
+      summary: Search for products
+      operationId: searchProducts
+      description: |
+        By passing in the appropriate options, you can search for
+        available products in the system
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up inventory
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - admins
+      summary: Adds a product
+      operationId: addProduct
+      description: Adds a product to the system
+      responses:
+        '201':
+          description: product created
+        '405':
+          description: Invalid input
+        '409':
+          description: Item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        description: Product to add
+        
+  '/products/{productId}':
+    get:
+      tags:
+        - users
+      summary: Retrieves a product
+      operationId: getProduct
+      description: Gets product details from the system
+      parameters:
+        - in: path
+          name: productId
+          description: Product id to retrieve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Product not found
+    put:
+      tags:
+        - admins
+      summary: Updates an existing product
+      operationId: updateProduct
+      description: Updates an existing product in the system
+      parameters:
+        - in: path
+          name: productId
+          description: Product id to retrieve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Product not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        description: Product to update
+
+    delete:
+      tags:
+        - admins
+      summary: Deletes a product
+      operationId: deleteProduct
+      description: Deletes a product from the system
+      parameters:
+        - in: path
+          name: productId
+          description: Product id to delete
+          required: true
+          schema:
+            type: string
+            format: uuid
+      
+      responses:
+        '200':
+          description: The product was deleted
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+        
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - availabe
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Widget Adapter
+        available:
+          type: boolean
+          example: true
+        created:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+    Manufacturer:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: ACME Corporation
+        homePage:
+          type: string
+          format: url
+          example: 'https://www.acme-corp.com'
+        phone:
+          type: string
+          example: 408-867-5309
+      type: object

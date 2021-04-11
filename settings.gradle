@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'openapi-demo'
-include('customer.api', 'customer.backend', 'customer.frontend')
+include('api', 'backend', 'frontend')

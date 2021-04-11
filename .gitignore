@@ -5,7 +5,10 @@
 build
 
 # ILI: Ignore IDE stuff
-.idea
+**/.classpath
+**/.project
+**/.settings
+**/bin
 
 # ILI: Ignore openAPI generated code
-customer.backend/openapi
+backend/openapi

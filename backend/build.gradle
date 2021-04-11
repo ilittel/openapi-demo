@@ -3,32 +3,44 @@ plugins {
     id 'org.openapi.generator' version '5.1.0'
 }
 
+version '1.0-SNAPSHOT'
+group 'org.openapidemo'
+description 'OpenAPI demo back-end'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    runtime project(':customer.frontend')
+    //runtimeOnly project(':frontend')
+    implementation 'io.dropwizard:dropwizard-core:2.0.20'
 }
 
 sourceSets {
     main {
         java {
-            srcDir "${rootDir}/openapi/src/gen/java"
+            srcDir 'openapi/src/gen/java'
         }
     }
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'openapi.app.App'
+    mainClass = 'org.openapidemo.app.BackendApp'
 }
 
 openApiGenerate {
     // For all generators and options, see https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators.md
     generatorName = 'jaxrs-jersey'
     // NOTE: Double quotes below are important!
-    inputSpec = "${rootDir}/customer.api/ilittel-CustomerAPI-2.0.0-oas3-resolved.yaml"
-    outputDir = "${rootDir}/customer.backend/openapi"
-    apiPackage = 'org.openapidemo.customer.api'
-    invokerPackage = 'org.openapidemo.customer.invoker'
-    modelPackage = 'org.openapidemo.customer.model'
+    inputSpec = "${rootDir}/api/ilittel-Products-1.0.0-unresolved.yaml"
+    outputDir = "${rootDir}/backend/openapi"
+    apiPackage = 'org.openapidemo.api'
+    invokerPackage = 'org.openapidemo.invoker'
+    modelPackage = 'org.openapidemo.model'
     configOptions = [
             dateLibrary: 'java8'
     ]
@@ -42,4 +54,9 @@ openApiGenerate {
     ]
 }
 
+task cleanGeneratedCode(type: Delete) {
+    delete "${rootDir}/backend/openapi"
+}
+
 tasks.compileJava.dependsOn(tasks.openApiGenerate)
+tasks.openApiGenerate.dependsOn(tasks.cleanGeneratedCode)
