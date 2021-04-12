@@ -16,9 +16,9 @@ import { ApiModule, BASE_PATH } from 'src/openapi';
     HttpClientModule,
     ApiModule
   ],
-  providers: [],
+  //providers: [],
   // Override BASE_PATH for OpenAPI services here if desired.
-  //providers: [{ provide: BASE_PATH, useValue: '/api'}],
+  providers: [{ provide: BASE_PATH, useValue: '/api'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
