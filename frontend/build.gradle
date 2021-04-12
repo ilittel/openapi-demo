@@ -16,7 +16,7 @@ openApiGenerate {
     generatorName = 'typescript-angular'
     // NOTE: Double quotes below are important!
     inputSpec = "${rootDir}/api/ilittel-Products-1.0.0-unresolved.yaml"
-    outputDir = "${projectDir}/src/gen/openapi"
+    outputDir = "${projectDir}/src/openapi"
     globalProperties = [
         // Notes on the generation properties below:
         // 1) An empty value means 'generate all'.

@@ -12,7 +12,7 @@ build
 
 # ILI: Ignore openAPI generated code
 backend/openapi
-frontend/src/gen
+frontend/src/openapi
 
 # ILI: Ignore npm output
 frontend/node_modules
