@@ -30,7 +30,7 @@ sourceSets {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.openapidemo.app.BackendApp'
+    mainClass = 'org.openapidemo.BackendApp'
 }
 
 openApiGenerate {
