@@ -62,3 +62,4 @@ task cleanGeneratedCode(type: Delete) {
 
 tasks.compileJava.dependsOn(tasks.openApiGenerate)
 tasks.openApiGenerate.dependsOn(tasks.cleanGeneratedCode)
+tasks.clean.dependsOn(tasks.cleanGeneratedCode)

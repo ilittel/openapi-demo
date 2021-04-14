@@ -31,4 +31,6 @@ task cleanGeneratedCode(type: Delete) {
     delete openApiGenerate.outputDir
 }
 
+tasks.assemble.dependsOn(tasks.openApiGenerate)
 tasks.openApiGenerate.dependsOn(tasks.cleanGeneratedCode)
+tasks.clean.dependsOn(tasks.cleanGeneratedCode)
