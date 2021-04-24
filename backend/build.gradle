@@ -15,8 +15,9 @@ repositories {
 }
 
 dependencies {
-    //runtimeOnly project(':frontend')
+    runtimeOnly project(':frontend')
     implementation 'io.dropwizard:dropwizard-core:2.0.20'
+    implementation 'io.dropwizard:dropwizard-assets:2.0.20'
     implementation 'io.swagger:swagger-annotations:1.5.3'
 }
 
@@ -61,5 +62,4 @@ task cleanGeneratedCode(type: Delete) {
 }
 
 tasks.compileJava.dependsOn(tasks.openApiGenerate)
-tasks.openApiGenerate.dependsOn(tasks.cleanGeneratedCode)
 tasks.clean.dependsOn(tasks.cleanGeneratedCode)

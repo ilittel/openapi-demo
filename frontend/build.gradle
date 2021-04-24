@@ -1,6 +1,7 @@
 plugins {
     id 'base'
     id 'org.openapi.generator' version '5.1.0'
+    id 'com.github.node-gradle.node' version '2.2.4'
 }
 
 version '1.0-SNAPSHOT'
@@ -27,10 +28,56 @@ openApiGenerate {
     ]
 }
 
+node {
+  version = '10.21.0'
+  npmVersion = '6.14.5'
+  download = true
+}
+
 task cleanGeneratedCode(type: Delete) {
     delete openApiGenerate.outputDir
 }
 
-tasks.assemble.dependsOn(tasks.openApiGenerate)
-tasks.openApiGenerate.dependsOn(tasks.cleanGeneratedCode)
+task buildAngularApp(type: NpxTask) {
+  dependsOn npmInstall
+  command = 'ng'
+  args = ['build', '--prod']
+  inputs.files('package.json', 'package-lock.json', 'angular.json', 'tsconfig.json', 'tsconfig.app.json')
+  inputs.dir('src')
+  outputs.dir('dist')
+}
+
+task packageAngularApp(type: Zip) {
+  dependsOn buildAngularApp
+  archiveBaseName = 'frontend'
+  archiveExtension = 'jar'
+  from('dist/frontend') {
+    // Path inside JAR where output will be placed.
+    into 'static'
+  }
+}
+
+task npmStart(type: NpxTask) {
+  command = 'npm'
+  args = ['start']
+}
+
+clean {
+  delete packageAngularApp.outputs
+  delete buildAngularApp.outputs
+}
+
+configurations {
+  npmArtifacts
+}
+
+artifacts {
+  npmArtifacts(packageAngularApp) {
+    type 'jar'
+  }
+}
+
+configurations.default.extendsFrom(configurations.npmArtifacts)
+
+tasks.assemble.dependsOn(tasks.openApiGenerate, tasks.packageAngularApp)
 tasks.clean.dependsOn(tasks.cleanGeneratedCode)

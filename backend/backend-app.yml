@@ -1,4 +1,4 @@
 server:
     type: simple
-    applicationContextPath: /api
- 
+    rootPath: /api/
+    applicationContextPath: /

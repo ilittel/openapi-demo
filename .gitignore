@@ -1,13 +1,15 @@
 # Ignore Gradle project-specific cache directory
 .gradle
 
-# Ignore Gradle build output directory
+# Ignore build output directories
 build
+dist
 
 # ILI: Ignore IDE stuff
 **/.classpath
 **/.project
 **/.settings
+**/.idea
 **/bin
 
 # ILI: Ignore openAPI generated code
